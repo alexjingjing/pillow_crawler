@@ -35,8 +35,14 @@ class LianjiaCrawler(BaseCrawler):
         for div in result:
             # 显示名称
             house_name = div.xpath("div[1]/div[1]/a")[0].text
-            house_location = div.xpath("div[1]/div[2]/div/text()")[0]
-            data = [house_name, house_location]
+            house_des = div.xpath("div[1]/div[2]/div/text()")[0]
+            house_type = div.xpath("div[1]/div[3]/div/text()")[0]
+            house_location = div.xpath("div[1]/div[3]/div/a")[0].text
+            house_follow = div.xpath("div[1]/div[4]/text()")[0]
+            house_price = div.xpath("div[1]/div[6]/div[1]/span")[0].text
+            house_price_unit = div.xpath("div[1]/div[6]/div[1]/text()")[0]
+            house_per_price = div.xpath("div[1]/div[6]/div[2]")[0].get("data-price")
+            data = [house_name, house_des, house_type, house_location, house_follow, house_price, house_price_unit, house_per_price]
             file_storage.save("lianjia.txt", "\t".join(data))
         # 翻页信息
         result = selector.xpath("/html/body/div[4]/div[1]/div[7]/div[2]/div")[0]
