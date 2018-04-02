@@ -7,9 +7,16 @@
 def check_key(dict, keys):
     for key in keys:
         if key not in dict:
-            raise Exception(key+"不存在")
+            raise Exception(key + "不存在")
+
+
+def check_key_return_bool(dict, keys):
+    for key in keys:
+        if key not in dict:
+            return False
+    return True
 
 
 def check_string_not_null(str, name):
     if str is None or str.strip() == "":
-        raise Exception(name+"为空")
+        raise Exception(name + "为空")
