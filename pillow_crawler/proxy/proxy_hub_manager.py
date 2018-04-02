@@ -13,18 +13,18 @@ class ProxyHubManager:
         self.sys_log = logging.getLogger("sys")
         self.sys_log.debug("ProxyHubManager init begin")
         # 解析配置文件
+        self.proxy_hub_dict = {}
         if "proxy" not in config:
             self.sys_log.debug("no proxy config")
         else:
-            self.proxy_hub_dict = {}
             proxy_configs = config["proxy"]
             for proxy_config in proxy_configs:
                 proxy_type = proxy_config["type"]
                 proxy_name = proxy_config["name"]
                 proxy_hub = None
-                if proxy_type == "xdaili": # 讯代理
+                if proxy_type == "xdaili":  # 讯代理
                     proxy_hub = XdailiProxyHub(proxy_config)
-                elif proxy_type == "kuaidaili": # 快代理
+                elif proxy_type == "kuaidaili":  # 快代理
                     proxy_hub = KuaidailiProxyHub()
                 else:
                     raise Exception("invalid proxy_type: %s" % proxy_type)
