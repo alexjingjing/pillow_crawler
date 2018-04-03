@@ -1,7 +1,10 @@
 data_storage:
-  - type: file
-    name: current_dir
-    file_dir: ./result
+  - type: mongodb
+    name: mongodb_test
+    replicaset: shangchengrepl
+    ip: 192.168.2.65
+    db: custom
+    col: lianjia
 downloader:
   - type: normal
     name: normal

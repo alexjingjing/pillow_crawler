@@ -30,3 +30,4 @@ nbdist/
 .nb-gradle/
 
 *.pyc
+*.pyc

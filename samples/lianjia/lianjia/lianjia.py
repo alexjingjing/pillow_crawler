@@ -1,5 +1,6 @@
 # coding=utf-8
 import sys
+import datetime
 
 sys.path.append('../../')
 from lxml import etree
@@ -27,7 +28,7 @@ class LianjiaCrawler(BaseCrawler):
 
     def process_lianjia_item(self, url, response):
         # 获取存储器
-        file_storage = self.data_storage_manager.get_data_storage("current_dir")
+        mongodb = self.data_storage_manager.get_data_storage("mongodb_test")
         # 解析页面
         selector = etree.HTML(response)
         # 获取页面信息
@@ -42,8 +43,10 @@ class LianjiaCrawler(BaseCrawler):
             house_price = div.xpath("div[1]/div[6]/div[1]/span")[0].text
             house_price_unit = div.xpath("div[1]/div[6]/div[1]/text()")[0]
             house_per_price = div.xpath("div[1]/div[6]/div[2]")[0].get("data-price")
-            data = [house_name, house_des, house_type, house_location, house_follow, house_price, house_price_unit, house_per_price]
-            file_storage.save("lianjia.txt", "\t".join(data))
+            mongodb.upsert_one({"house_name": house_name}, {
+                "$set": {"house_des": house_des, "house_type": house_type, "house_location": house_location,
+                         "house_follow": house_follow, "house_price": house_price, "house_price_unit": house_price_unit,
+                         "house_per_price": house_per_price, "update_time": datetime.datetime.now()}})
         # 翻页信息
         result = selector.xpath("/html/body/div[4]/div[1]/div[7]/div[2]/div")[0]
         if result is not None:
@@ -61,7 +64,7 @@ def main():
     # 创建爬虫，添加初始任务
     crawlers = [LianjiaCrawler() for i in range(3)]
     crawler_manager.set_crawlers(crawlers)
-    crawler_manager.add_task("https://sh.lianjia.com/ershoufang/rs%E4%B8%8A%E6%B5%B7%E5%BA%B7%E5%9F%8E/")
+    crawler_manager.add_task("https://sh.lianjia.com/ershoufang/rs%E9%97%B5%E8%A1%8C/")
     # 开启爬取
     crawler_manager.start()
     crawler_manager.join()

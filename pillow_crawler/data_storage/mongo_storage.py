@@ -7,7 +7,7 @@ from pillow_crawler.data_storage.data_storage import DataStorage
 from pillow_crawler.system.dict_util import *
 
 
-class MySqlStorage(DataStorage):
+class MongoStorage(DataStorage):
     def __init__(self, config):
         connect = False if not check_key_return_bool(config, ["connect"]) else config['connect']
         self.sys_log = logging.getLogger("sys")
@@ -29,3 +29,6 @@ class MySqlStorage(DataStorage):
 
     def insert_one(self, item):
         self.col.insert_one(item)
+
+    def upsert_one(self, query_filter, item):
+        self.col.update_one(query_filter, item, upsert=True)

@@ -2,6 +2,7 @@
 from pillow_crawler.system.singleton import *
 from pillow_crawler.data_storage.mysql_storage import *
 from pillow_crawler.data_storage.file_storage import *
+from pillow_crawler.data_storage.mongo_storage import *
 import logging
 
 
@@ -26,6 +27,9 @@ class DataStorageManager:
                 elif d_type == "file":
                     # 创建文件系统存储
                     self.data_storage_dict[d_name] = FileStorage(d_config)
+                elif d_type == "mongodb":
+                    # 创建MongoDB存储
+                    self.data_storage_dict[d_name] = MongoStorage(d_config)
         self.sys_log.debug("DataStorageManager init done")
 
     def get_data_storage(self, name):
