@@ -1,0 +1,14 @@
+data_storage:
+  - type: mongodb
+    name: mongodb_test
+    replicaset: shangchengrepl
+    ip: 192.168.2.65
+    db: custom
+    col: meijing
+downloader:
+  - type: normal
+    name: normal
+log:
+  log_dir: ./log
+  log_level: DEBUG
+  
